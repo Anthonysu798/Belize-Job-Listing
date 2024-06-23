@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   motion,
   AnimatePresence,
@@ -23,7 +23,11 @@ export const FloatingNav = ({
 }) => {
   const { scrollY } = useScroll();
   const [visible, setVisible] = useState(true);
-  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (current) => {
     const previous: number | undefined = scrollY.getPrevious();
@@ -38,8 +42,15 @@ export const FloatingNav = ({
   });
 
   const handleLoginClick = () => {
-    router.push('/auth/signin');
+    if (isMounted) {
+      const router = useRouter();
+      router.push('/auth/signin');
+    }
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
