@@ -4,23 +4,33 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255; /* Changed from background-start-rgb to background-rgb */
+  --background-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-rgb: 0, 0, 0; /* Changed from background-start-rgb to background-rgb */
+    --background-rgb: 0, 0, 0;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb)); /* Removed the gradient background */
+  background: rgb(var(--background-rgb));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+html.dark body {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 0, 0, 0;
+}
+
+html.dark .navbar {
+  background-color: rgb(var(--background-rgb));
+  color: rgb(var(--foreground-rgb));
 }
