@@ -35,13 +35,19 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-5 transition-colors duration-300 ${scrolled ? 'bg-white shadow dark:bg-gray-900' : 'bg-transparent dark:bg-gray-900'}`}>
+    <nav className={`bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between p-4 transition-colors duration-300 ${scrolled || menuOpen ? (darkMode ? 'bg-blue-950' : 'light:bg-white') : 'bg-transparent dark:bg-gray-900'}`}>
       <div className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Belize Job Listing</span>
+          <span className="self-center xl:text-2xl l:text-2xl md:text-xl sm:text-lg  font-semibold whitespace-nowrap dark:text-white">Belize Job Listing</span>
         </Link>
-        <div className="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
-          <button onClick={handleLoginClick} className="light:text-gray-800 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-800 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 focus:outline-none">Sign In</button>
+        <div className="hidden md:flex md:items-center md:space-x-8 rtl:space-x-reverse">
+          <Link href="/resume-services" className="block py-2 px-3 light:text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Resume Help</Link>
+          <Link href="/about" className="block py-2 px-3 light:text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent">About</Link>
+          <Link href="/pricing" className="block py-2 px-3 light:text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Pricing</Link>
+        </div>
+        <div className="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+          <button onClick={handleLoginClick} className="light:text-gray-800 dark:text-white light:hover:bg-gray-50 hover:bg-blue-700 hover:text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-lg xl:text-sm lg:text-sm md:text-sm text-xs/[14px] px-4 py-2 md:px-5 md:py-2.5 focus:outline-none dark:focus:ring-gray-800">Sign In</button>
+          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg xl:text-sm lg:text-sm md:text-sm text-xs/[14px] px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sign Up</button>
           <button className="focus:outline-none text-gray-800 dark:text-white" onClick={toggleTheme}>
             {darkMode ? '☀️' : '🌙'}
           </button>
@@ -56,22 +62,22 @@ const Navbar: React.FC = () => {
             </svg>
           </button>
         </div>
-        <div className={`items-center justify-between ${menuOpen ? 'block' : 'hidden'} w-full md:flex md:w-auto md:order-1`}>
-          <ul className="flex flex-col mt-4 font-medium md:flex-row md:mt-0 md:space-x-8 rtl:space-x-reverse">
-            <li>
-              <Link href="/" className="block py-2 px-3 light:text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:md:hover:text-blue-500 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Home</Link>
-            </li>
-            <li>
-              <Link href="/pricing" className="block py-2 px-3  light:text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:md:hover:text-blue-500 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Pricing</Link>
-            </li>
-            <li>
-              <Link href="/resume-services" className="block py-2 px-3 light:text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:md:hover:text-blue-500 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Resume Help</Link>
-            </li>
-            <li>
-              <Link href="/about" className="block py-2 px-3 light:text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:md:hover:text-blue-500 dark:hover:text-blue-500 md:dark:hover:bg-transparent">About</Link>
-            </li>
-          </ul>
-        </div>
+      </div>
+      <div className={`items-center justify-between ${menuOpen ? 'block' : 'hidden'} w-full md:hidden mt-4`}>
+        <ul className="flex flex-col mt-4 md:mt-0 md:flex-row md:space-x-8 rtl:space-x-reverse w-full md:w-auto">
+          <li>
+            <Link href="/" className="block py-2 px-3 light:text-black dark:text-white border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Home</Link>
+          </li>
+          <li>
+            <Link href="/resume-services" className="block py-2 px-3 light:text-black dark:text-white border-b border-gray-100 hover:bg-blue-700  md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Resume Help</Link>
+          </li>
+          <li>
+            <Link href="/about" className="block py-2 px-3 light:text-black dark:text-white border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent">About</Link>
+          </li>
+          <li>
+            <Link href="/pricing" className="block py-2 px-3 light:text-black dark:text-white border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent">Pricing</Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );
