@@ -16,11 +16,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setDarkMode(savedTheme === 'dark');
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     }
   }, []);
 
@@ -28,11 +24,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     setDarkMode((prevDarkMode) => {
       const newDarkMode = !prevDarkMode;
       localStorage.setItem('theme', newDarkMode ? 'dark' : 'light');
-      if (newDarkMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.classList.toggle('dark', newDarkMode);
       return newDarkMode;
     });
   };

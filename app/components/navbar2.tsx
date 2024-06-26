@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className={`bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between p-4 transition-colors duration-300 ${scrolled || menuOpen ? (darkMode ? 'bg-blue-950' : 'light:bg-white') : 'bg-transparent dark:bg-gray-900'}`}>
+    <nav className={`light:bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between p-4 transition-colors duration-300 ${scrolled || menuOpen ? (darkMode ? 'bg-blue-950' : 'bg-white') : 'bg-transparent dark:bg-gray-900'}`}>
       <div className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <span className="self-center xl:text-2xl l:text-2xl md:text-xl sm:text-lg  font-semibold whitespace-nowrap dark:text-white">Belize Job Listing</span>

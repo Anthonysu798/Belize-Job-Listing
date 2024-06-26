@@ -103,16 +103,14 @@ export const HeroParallax = ({
 
 export const Header = () => {
     return (
-
-        <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0">
-            <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
+        <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
+            <h1 className="text-2xl md:text-7xl font-bold text-black dark:text-white">
                 The Premier <br /> Job Listing Platform
             </h1>
 
-            <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
+            <p className="max-w-2xl text-base md:text-xl mt-8 text-black dark:text-neutral-200">
                 Welcome to Belize Job Listing, your premier platform for connecting job seekers and employers. Our mission is to facilitate seamless hiring by providing a comprehensive and user-friendly platform. Whether you are looking for the perfect candidate or your dream job, we are here to help you every step of the way.
             </p>
-
         </div>
     );
 };
