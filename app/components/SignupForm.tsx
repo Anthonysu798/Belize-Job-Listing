@@ -191,7 +191,7 @@ export function SignupFormDemo() {
         {success && <p className="text-green-500 text-center text-xs italic ml-3 mt-2 mb-2">{success}</p>}
 
         <button
-          className="bg-gradient-to-br relative group/btn from-black   to-neutral-600 block  w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
+          className="bg-gradient-to-br relative group/btn from-blue-900 to-pink-400 block  w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
           type="submit"
         >
           Sign up &rarr;
@@ -202,18 +202,7 @@ export function SignupFormDemo() {
 
         <div className="flex flex-col space-y-4">
           <button
-            className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
-            type="button"
-            onClick={() => signIn('github')}
-          >
-            <IconBrandGithub className="h-4 w-4 text-neutral-800" />
-            <span className="text-neutral-700">
-              GitHub
-            </span>
-            <BottomGradient />
-          </button>
-          <button
-            className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
+            className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-200"
             type="button"
             onClick={() => signIn('google')}
           >
@@ -223,17 +212,7 @@ export function SignupFormDemo() {
             </span>
             <BottomGradient />
           </button>
-          <button
-            className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
-            type="button"
-            onClick={() => signIn('onlyfans')}
-          >
-            <IconBrandOnlyfans className="h-4 w-4 text-neutral-800" />
-            <span className="text-neutral-700">
-              OnlyFans
-            </span>
-            <BottomGradient />
-          </button>
+          
         </div>
         <div className="mt-4 text-center">
           <span className="text-neutral-600">

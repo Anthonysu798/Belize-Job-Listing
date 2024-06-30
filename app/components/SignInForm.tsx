@@ -27,17 +27,24 @@ export function SignInForm() {
     return '';
   };
 
+  const validatePassword = (password: string) => {
+    if (!password) {
+      return 'Please enter your password';
+    }
+    return '';
+  };
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    setErrors((prev) => ({ ...prev, email: validateEmail(value), password: '' }));
+    setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
     setError(''); // Clear the main error message
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPassword(value);
-    setErrors((prev) => ({ ...prev, password: '' }));
+    setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
     setError(''); // Clear the main error message
   };
 
@@ -47,10 +54,11 @@ export function SignInForm() {
 
     const newErrors = {
       email: validateEmail(email),
+      password: validatePassword(password),
     };
     setErrors(newErrors);
 
-    if (newErrors.email) {
+    if (newErrors.email || newErrors.password) {
       return;
     }
 
@@ -72,8 +80,9 @@ export function SignInForm() {
   };
 
   return (
-    <>
-      <div className="m-[90px] max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white">
+    <div className="relative min-h-screen">
+      <div className="absolute inset-0 z-0 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      <div className="relative z-10 m-[90px] max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input">
         <h2 className="font-bold text-xl text-neutral-800">
           Sign In to Belize Job Listing
         </h2>
@@ -104,13 +113,13 @@ export function SignInForm() {
               onChange={handlePasswordChange}
               className={cn(errors.password && 'border-red-500')}
             />
-            {errors.password && <p className="text-red-500 text-xs italic ">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-xs italic ml-2 mb-2">{errors.password}</p>}
           </LabelInputContainer>
 
           {error && <p className="text-red-500 text-xs italic ml-2 mb-3">{error}</p>}
 
           <button
-            className="bg-gradient-to-br relative group/btn from-black to-neutral-600 block w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
+            className="bg-gradient-to-br relative group/btn from-blue-900 to-pink-400 block w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
             type="submit"
           >
             Sign In &rarr;
@@ -121,35 +130,13 @@ export function SignInForm() {
 
           <div className="flex flex-col space-y-4">
             <button
-              className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
+              className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-200"
               type="button"
               onClick={handleGoogleSignIn}
             >
               <IconBrandGoogle className="h-4 w-4 text-neutral-800" />
               <span className="text-neutral-700 text-sm">
                 Google
-              </span>
-              <BottomGradient />
-            </button>
-            <button
-              className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
-              type="button"
-              onClick={() => signIn('github')}
-            >
-              <IconBrandGithub className="h-4 w-4 text-neutral-800" />
-              <span className="text-neutral-700 text-sm">
-                GitHub
-              </span>
-              <BottomGradient />
-            </button>
-            <button
-              className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50"
-              type="button"
-              onClick={() => signIn('onlyfans')}
-            >
-              <IconBrandOnlyfans className="h-4 w-4 text-neutral-800" />
-              <span className="text-neutral-700 text-sm">
-                OnlyFans
               </span>
               <BottomGradient />
             </button>
@@ -165,7 +152,7 @@ export function SignInForm() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
