@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import styles from "@/style/Navbar.module.css";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -34,7 +35,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`bg-white border-gray-200 fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between p-4 transition-colors duration-300 ${
+      className={`bg-white border-purple-600 border-b-2 fixed top-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between p-4 transition-colors duration-300 ${
         scrolled || menuOpen ? "bg-white" : "bg-transparent"
       }`}
     >
@@ -45,21 +46,22 @@ const Navbar: React.FC = () => {
           </span>
         </Link>
         <div className="hidden md:flex md:items-center md:space-x-8 rtl:space-x-reverse">
-          <Link href="/resume-services" className="block py-2 px-3 text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+          <Link href="/resume-services" className={`${styles.navbarItemsHover} block py-2 px-3 font-bold text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0  md:p-0`}>
             Resume Help
           </Link>
-          <Link href="/about" className="block py-2 px-3 text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+          <Link href="/about" className={`${styles.navbarItemsHover} block py-2 px-3 font-bold text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0  md:p-0`}>
             About
           </Link>
-          <Link href="/pricing" className="block py-2 px-3 text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+          <Link href="/pricing" className={`${styles.navbarItemsHover} block py-2 px-3 font-bold text-gray-900 hover:bg-gray-50 md:hover:bg-transparent md:border-0  md:p-0`}>
             Pricing
           </Link>
         </div>
         <div className="flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <button
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg xl:text-sm lg:text-sm md:text-sm text-xs/[14px] px-4 py-2 md:px-5 md:py-2.5 focus:outline-none"
+            onClick={handleLoginClick}
+            className={`text-white ${styles.logInButton} focus:ring-4 font-bold focus:ring-blue-300 rounded-lg xl:text-sm lg:text-sm md:text-sm text-xs/[14px] px-4 py-2 md:px-5 md:py-2.5 focus:outline-none`}
           >
-            Sign Up
+            Log In
           </button>
           <button
             onClick={toggleMenu}
@@ -102,3 +104,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+

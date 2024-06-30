@@ -54,49 +54,50 @@ export const HeroParallax = ({
         useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
         springConfig
     );
+
     return (
-        <div
-            ref={ref}
-            className="h-[300vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
-        >
-            <Header />
-            <motion.div
-                style={{
-                    rotateX,
-                    rotateZ,
-                    translateY,
-                    opacity,
-                }}
-                className=""
-            >
-                <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
-                    {firstRow.map((product) => (
-                        <ProductCard
-                            product={product}
-                            translate={translateX}
-                            key={product.title}
-                        />
-                    ))}
+        <div ref={ref} className="relative overflow-hidden">
+            <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+            <div className="h-[300vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]">
+                <Header />
+                <motion.div
+                    style={{
+                        rotateX,
+                        rotateZ,
+                        translateY,
+                        opacity,
+                    }}
+                    className=""
+                >
+                    <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
+                        {firstRow.map((product) => (
+                            <ProductCard
+                                product={product}
+                                translate={translateX}
+                                key={product.title}
+                            />
+                        ))}
+                    </motion.div>
+                    <motion.div className="flex flex-row mb-20 space-x-20">
+                        {secondRow.map((product) => (
+                            <ProductCard
+                                product={product}
+                                translate={translateXReverse}
+                                key={product.title}
+                            />
+                        ))}
+                    </motion.div>
+                    <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
+                        {thirdRow.map((product) => (
+                            <ProductCard
+                                product={product}
+                                translate={translateX}
+                                key={product.title}
+                            />
+                        ))}
+                    </motion.div>
                 </motion.div>
-                <motion.div className="flex flex-row  mb-20 space-x-20 ">
-                    {secondRow.map((product) => (
-                        <ProductCard
-                            product={product}
-                            translate={translateXReverse}
-                            key={product.title}
-                        />
-                    ))}
-                </motion.div>
-                <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
-                    {thirdRow.map((product) => (
-                        <ProductCard
-                            product={product}
-                            translate={translateX}
-                            key={product.title}
-                        />
-                    ))}
-                </motion.div>
-            </motion.div>
+            </div>
         </div>
     );
 };
@@ -139,7 +140,7 @@ export const ProductCard = ({
         >
             <Link
                 href={product.link}
-                className="block group-hover/product:shadow-2xl "
+                className="block group-hover/product:shadow-2xl"
             >
                 <Image
                     src={product.thumbnail}

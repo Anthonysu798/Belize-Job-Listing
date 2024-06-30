@@ -1,0 +1,11 @@
+.logInButton {
+    background-color: #5d46cf;
+}
+
+.logInButton:hover {
+    background-color: #4c36b5;
+}
+
+.navbarItemsHover:hover{
+    color: #5d46cf;
+}
