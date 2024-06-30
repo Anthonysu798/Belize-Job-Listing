@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={toggleMenu}
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200"
           >
             <span className="sr-only">Open main menu</span>
             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -78,22 +78,22 @@ const Navbar: React.FC = () => {
       <div className={`items-center justify-between ${menuOpen ? "block" : "hidden"} w-full md:hidden mt-4`}>
         <ul className="flex flex-col mt-4 md:mt-0 md:flex-row md:space-x-8 rtl:space-x-reverse w-full md:w-auto">
           <li>
-            <Link href="/" className="block py-2 px-3 text-black border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+            <Link href="/" className={`${styles.hiddenNavbarItems} block py-2 px-3 text-black border-b border-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0`}>
               Home
             </Link>
           </li>
           <li>
-            <Link href="/resume-services" className="block py-2 px-3 text-black border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+            <Link href="/resume-services" className={`${styles.hiddenNavbarItems} block py-2 px-3 text-black border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0`}>
               Resume Help
             </Link>
           </li>
           <li>
-            <Link href="/about" className="block py-2 px-3 text-black border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+            <Link href="/about" className={`${styles.hiddenNavbarItems} block py-2 px-3 text-black border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0`}>
               About
             </Link>
           </li>
           <li>
-            <Link href="/pricing" className="block py-2 px-3 text-black border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+            <Link href="/pricing" className={`${styles.hiddenNavbarItems} block py-2 px-3 text-black border-b border-gray-100 hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0`}>
               Pricing
             </Link>
           </li>

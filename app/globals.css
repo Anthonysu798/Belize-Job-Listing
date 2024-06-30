@@ -17,13 +17,3 @@ body {
     text-wrap: balance;
   }
 }
-
-html.dark body {
-  --foreground-rgb: 255, 255, 255;
-  --background-rgb: 0, 0, 0;
-}
-
-html.dark .navbar {
-  background-color: rgb(var(--background-rgb));
-  color: rgb(var(--foreground-rgb));
-}
