@@ -15,7 +15,7 @@ const planLimits: PlanLimits = {
   Premium: 10,
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await dbConnect();
 
   const { method } = req;
@@ -48,3 +48,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       break;
   }
 };
+
+export default handler;

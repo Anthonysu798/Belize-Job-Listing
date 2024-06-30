@@ -144,7 +144,7 @@ export function SignInForm() {
 
           <div className="mt-4 text-center">
             <span className="text-neutral-600">
-              Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
               <Link href="/auth/signup" legacyBehavior>
                 <a className="text-blue-500 hover:underline">Sign Up</a>
               </Link>
