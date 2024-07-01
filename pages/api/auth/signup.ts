@@ -11,9 +11,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, phone, dob, username, gender } = req.body;
 
-  if (!email || !password || !firstName || !lastName) {
+  if (!email || !password || !firstName || !lastName || !phone || !dob || !username || !gender) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
@@ -30,6 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       password: hashedPassword,
       firstName,
       lastName,
+      phone,
+      dob,
+      username,
+      gender,
       role: 'user',
     });
 
@@ -37,6 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
-    return res.status(500).json({ message: 'Internal server error' });
+    console.error('Error creating user:', error as Error);
+    return res.status(500).json({ message: 'Internal server error', error: error instanceof Error ? error.message : 'Unknown error' });
   }
 }

@@ -101,13 +101,6 @@ export function SignupFormDemo() {
     return null;
   };
 
-  const validateUsername = (username: string) => {
-    if (!username) {
-      return 'Username is required';
-    }
-    return '';
-  };
-
   const validateGender = (gender: string) => {
     if (!gender) {
       return 'Gender is required';
@@ -211,13 +204,6 @@ export function SignupFormDemo() {
     }
   };
 
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setUsername(value);
-    setErrors((prev) => ({ ...prev, username: validateUsername(value) }));
-    setError(''); // Clear the main error message
-  };
-
   const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setGender(value);
@@ -239,7 +225,6 @@ export function SignupFormDemo() {
       confirmPassword: validateConfirmPassword(confirmPassword),
       phone: validatePhone(phone),
       dob: validateDob(dobInput),
-      username: validateUsername(username),
       gender: validateGender(gender),
     };
     setErrors(newErrors);
@@ -306,18 +291,6 @@ export function SignupFormDemo() {
               {errors.lastName && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.lastName}</p>}
             </LabelInputContainer>
           </div>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              placeholder="Enter your username"
-              type="text"
-              value={username}
-              onChange={handleUsernameChange}
-              className={cn(errors.username ? 'border-red-500' : 'border-gray-300')}
-            />
-            {errors.username && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.username}</p>}
-          </LabelInputContainer>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="email">Email Address</Label>
             <Input

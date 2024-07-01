@@ -3,16 +3,12 @@
 const config = {
   mongodb: {
     // TODO Change (or review) the url to your MongoDB:
-    url: "mongodb://localhost:27017",
+    url: "mongodb+srv://anthonysu6206026:LpWRFwbGGNdQ6dSk@nextjsauthentication.mmnjfgm.mongodb.net/?retryWrites=true&w=majority&",
 
     // TODO Change this to your database name:
-    databaseName: "YOURDATABASENAME",
+    databaseName: "nextjsauthentication",
 
     options: {
-      useNewUrlParser: true, // removes a deprecation warning when connecting
-      useUnifiedTopology: true, // removes a deprecating warning when connecting
-      //   connectTimeoutMS: 3600000, // increase connection timeout to 1 hour
-      //   socketTimeoutMS: 3600000, // increase socket timeout to 1 hour
     }
   },
 
