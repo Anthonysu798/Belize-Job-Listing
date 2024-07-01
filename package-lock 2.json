@@ -9,15 +9,11 @@
       "version": "0.1.0",
       "dependencies": {
         "@nextui-org/react": "^2.4.2",
-        "@radix-ui/react-icons": "^1.3.0",
         "@radix-ui/react-label": "^2.1.0",
-        "@radix-ui/react-slot": "^1.1.0",
-        "@tabler/icons-react": "^3.7.0",
+        "@tabler/icons-react": "^3.6.0",
         "@types/next-auth": "^3.15.0",
         "bcryptjs": "^2.4.3",
-        "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
-        "date-fns": "^3.6.0",
         "framer-motion": "^11.2.12",
         "jsonwebtoken": "^9.0.2",
         "mini-svg-data-uri": "^1.4.4",
@@ -25,12 +21,8 @@
         "next": "14.2.4",
         "next-auth": "^4.24.7",
         "react": "^18",
-        "react-day-picker": "^8.10.1",
         "react-dom": "^18",
-        "react-hook-form": "^7.52.0",
-        "tailwind-merge": "^2.3.0",
-        "tailwindcss-animate": "^1.0.7",
-        "zod": "^3.23.8"
+        "tailwind-merge": "^2.3.0"
       },
       "devDependencies": {
         "@types/bcryptjs": "^2.4.6",
@@ -2009,15 +2001,6 @@
         "@types/react": {
           "optional": true
         }
-      }
-    },
-    "node_modules/@radix-ui/react-icons": {
-      "version": "1.3.0",
-      "resolved": "https://registry.npmjs.org/@radix-ui/react-icons/-/react-icons-1.3.0.tgz",
-      "integrity": "sha512-jQxj/0LKgp+j9BiTXz3O3sgs26RNet2iLWmsPyRz2SIcR4q/4SbazXfnYwbAr+vLYKSfc7qxzyGQA1HLlYiuNw==",
-      "license": "MIT",
-      "peerDependencies": {
-        "react": "^16.x || ^17.x || ^18.x"
       }
     },
     "node_modules/@radix-ui/react-label": {
@@ -4120,9 +4103,9 @@
       }
     },
     "node_modules/caniuse-lite": {
-      "version": "1.0.30001639",
-      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001639.tgz",
-      "integrity": "sha512-eFHflNTBIlFwP2AIKaYuBQN/apnUoKNhBdza8ZnW/h2di4LCZ4xFqYlxUxo+LQ76KFI1PGcC1QDxMbxTZpSCAg==",
+      "version": "1.0.30001638",
+      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001638.tgz",
+      "integrity": "sha512-5SuJUJ7cZnhPpeLHaH0c/HPAnAHZvS6ElWyHK9GSIbVOQABLzowiI2pjmpvZ1WEbkyz46iFd4UXlOHR5SqgfMQ==",
       "funding": [
         {
           "type": "opencollective",
@@ -4190,27 +4173,6 @@
       },
       "engines": {
         "node": ">= 6"
-      }
-    },
-    "node_modules/class-variance-authority": {
-      "version": "0.7.0",
-      "resolved": "https://registry.npmjs.org/class-variance-authority/-/class-variance-authority-0.7.0.tgz",
-      "integrity": "sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==",
-      "license": "Apache-2.0",
-      "dependencies": {
-        "clsx": "2.0.0"
-      },
-      "funding": {
-        "url": "https://joebell.co.uk"
-      }
-    },
-    "node_modules/class-variance-authority/node_modules/clsx": {
-      "version": "2.0.0",
-      "resolved": "https://registry.npmjs.org/clsx/-/clsx-2.0.0.tgz",
-      "integrity": "sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==",
-      "license": "MIT",
-      "engines": {
-        "node": ">=6"
       }
     },
     "node_modules/client-only": {
@@ -4398,16 +4360,6 @@
       },
       "funding": {
         "url": "https://github.com/sponsors/ljharb"
-      }
-    },
-    "node_modules/date-fns": {
-      "version": "3.6.0",
-      "resolved": "https://registry.npmjs.org/date-fns/-/date-fns-3.6.0.tgz",
-      "integrity": "sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==",
-      "license": "MIT",
-      "funding": {
-        "type": "github",
-        "url": "https://github.com/sponsors/kossnocorp"
       }
     },
     "node_modules/debug": {
@@ -7638,20 +7590,6 @@
         "node": ">=0.10.0"
       }
     },
-    "node_modules/react-day-picker": {
-      "version": "8.10.1",
-      "resolved": "https://registry.npmjs.org/react-day-picker/-/react-day-picker-8.10.1.tgz",
-      "integrity": "sha512-TMx7fNbhLk15eqcMt+7Z7S2KF7mfTId/XJDjKE8f+IUcFn0l08/kI4FiYTL/0yuOLmEcbR4Fwe3GJf/NiiMnPA==",
-      "license": "MIT",
-      "funding": {
-        "type": "individual",
-        "url": "https://github.com/sponsors/gpbl"
-      },
-      "peerDependencies": {
-        "date-fns": "^2.28.0 || ^3.0.0",
-        "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
-      }
-    },
     "node_modules/react-dom": {
       "version": "18.3.1",
       "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz",
@@ -7663,22 +7601,6 @@
       },
       "peerDependencies": {
         "react": "^18.3.1"
-      }
-    },
-    "node_modules/react-hook-form": {
-      "version": "7.52.0",
-      "resolved": "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.52.0.tgz",
-      "integrity": "sha512-mJX506Xc6mirzLsmXUJyqlAI3Kj9Ph2RhplYhUVffeOQSnubK2uVqBFOBJmvKikvbFV91pxVXmDiR+QMF19x6A==",
-      "license": "MIT",
-      "engines": {
-        "node": ">=12.22.0"
-      },
-      "funding": {
-        "type": "opencollective",
-        "url": "https://opencollective.com/react-hook-form"
-      },
-      "peerDependencies": {
-        "react": "^16.8.0 || ^17 || ^18 || ^19"
       }
     },
     "node_modules/react-is": {
@@ -8538,15 +8460,6 @@
         "node": ">=14.0.0"
       }
     },
-    "node_modules/tailwindcss-animate": {
-      "version": "1.0.7",
-      "resolved": "https://registry.npmjs.org/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz",
-      "integrity": "sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==",
-      "license": "MIT",
-      "peerDependencies": {
-        "tailwindcss": ">=3.0.0 || insiders"
-      }
-    },
     "node_modules/tailwindcss/node_modules/object-hash": {
       "version": "3.0.0",
       "resolved": "https://registry.npmjs.org/object-hash/-/object-hash-3.0.0.tgz",
@@ -9195,15 +9108,6 @@
       },
       "funding": {
         "url": "https://github.com/sponsors/sindresorhus"
-      }
-    },
-    "node_modules/zod": {
-      "version": "3.23.8",
-      "resolved": "https://registry.npmjs.org/zod/-/zod-3.23.8.tgz",
-      "integrity": "sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==",
-      "license": "MIT",
-      "funding": {
-        "url": "https://github.com/sponsors/colinhacks"
       }
     }
   }
