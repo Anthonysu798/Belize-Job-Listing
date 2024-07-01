@@ -10,6 +10,12 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/auth/signin', req.url));
   }
 
+  const isDashboardRoute = req.nextUrl.pathname.startsWith('/dashboard');
+
+  if (isDashboardRoute && token.role !== 'admin') {
+    return NextResponse.redirect(new URL('/404', req.url));
+  }
+
   return NextResponse.next();
 }
 

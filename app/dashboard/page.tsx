@@ -1,8 +1,28 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const Dashboard = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'loading') {
+      // Do nothing while loading
+      return;
+    }
+
+    if (!session || session.user.role !== 'admin') {
+      router.push('/404'); // Redirect to 404 page if not admin
+    }
+  }, [session, status, router]);
+
+  if (status === 'loading' || !session || session.user.role !== 'admin') {
+    return null; // Return null while checking the session
+  }
+
   return (
     <div className="container mx-auto mt-10 mb-10 p-4 dark:bg-gray-800 dark:text-white">
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
