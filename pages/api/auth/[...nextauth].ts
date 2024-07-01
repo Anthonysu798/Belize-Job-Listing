@@ -1,6 +1,4 @@
-// pages/api/auth/[...nextauth].ts
 import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import dbConnect from '@/app/utils/dbConnect';
 import User from '@/app/models/User';
@@ -10,23 +8,20 @@ dbConnect();
 
 export default NextAuth({
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req) {
-        if (!credentials) {
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
           throw new Error('No credentials provided');
         }
 
         const user = await User.findOne({ email: credentials.email });
-        if (user) {
+
+        if (user && user.password) {
           const isValid = await bcrypt.compare(credentials.password, user.password);
           if (isValid) {
             return { id: user.id, email: user.email, role: user.role };
@@ -59,4 +54,5 @@ export default NextAuth({
   session: {
     strategy: 'jwt',
   },
+  debug: true,
 });

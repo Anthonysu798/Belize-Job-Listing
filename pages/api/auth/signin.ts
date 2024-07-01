@@ -11,11 +11,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+
   await dbConnect();
 
   const user = await User.findOne({ email });
 
-  if (!user) {
+  if (!user || !user.password) {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
@@ -25,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.JWT_SECRET as string, {
     expiresIn: '1h',
   });
 

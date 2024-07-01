@@ -7,11 +7,6 @@ import { Input } from "@/app/components/ui/input";
 import { cn } from "@/app/utils/cn";
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-  IconBrandOnlyfans,
-} from "@tabler/icons-react";
 
 export function SignInForm() {
   const [email, setEmail] = useState('');
@@ -35,7 +30,7 @@ export function SignInForm() {
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.toLowerCase(); // Convert to lowercase
     setEmail(value);
     setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
     setError(''); // Clear the main error message
@@ -73,10 +68,6 @@ export function SignInForm() {
     } else {
       router.push('/dashboard');
     }
-  };
-
-  const handleGoogleSignIn = async () => {
-    await signIn('google', { callbackUrl: '/dashboard' });
   };
 
   return (
@@ -127,20 +118,6 @@ export function SignInForm() {
           </button>
 
           <div className="bg-gradient-to-r from-transparent via-neutral-300 to-transparent my-8 h-[1px] w-full" />
-
-          <div className="flex flex-col space-y-4">
-            <button
-              className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-200"
-              type="button"
-              onClick={handleGoogleSignIn}
-            >
-              <IconBrandGoogle className="h-4 w-4 text-neutral-800" />
-              <span className="text-neutral-700 text-sm">
-                Google
-              </span>
-              <BottomGradient />
-            </button>
-          </div>
 
           <div className="mt-4 text-center">
             <span className="text-neutral-600">

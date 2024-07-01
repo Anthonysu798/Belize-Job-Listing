@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label } from "@/app/components/ui/label";
 import { Input } from "@/app/components/ui/input";
 import { cn } from "@/app/utils/cn";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { IconBrandGoogle } from "@tabler/icons-react";
-import { signIn } from "next-auth/react";
 import { Button } from "@/app/components/ui/button";
 import { Calendar } from "@/app/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
@@ -23,7 +21,6 @@ export function SignupFormDemo() {
   const [phone, setPhone] = useState('501+');
   const [dobInput, setDobInput] = useState('');
   const [dob, setDob] = useState<Date | null>(null);
-  const [username, setUsername] = useState('');
   const [gender, setGender] = useState('');
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [error, setError] = useState('');
@@ -31,10 +28,33 @@ export function SignupFormDemo() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
 
+  // Helper function to check if a field exists
+  const checkIfExists = async (field: string, value: string) => {
+    try {
+      const response = await fetch('/api/auth/checkExists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ field, value }),
+      });
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error('Error checking field existence:', error);
+      return false;
+    }
+  };
+
   // Validation functions
-  const validateEmail = (email: string) => {
+  const validateEmail = async (email: string) => {
+    email = email.toLowerCase();
     if (!email.includes('@') || !email.includes('.')) {
       return 'Email must contain "@" and "."';
+    }
+    const exists = await checkIfExists('email', email);
+    if (exists) {
+      return 'Email already in use';
     }
     return '';
   };
@@ -68,26 +88,29 @@ export function SignupFormDemo() {
     return '';
   };
 
-  const validatePhone = (phone: string) => {
+  const validatePhone = async (phone: string) => {
     const phonePattern = /^501\+\d{7}$/;
     if (!phonePattern.test(phone)) {
       return 'Phone number must be in the format 501+XXXXXXX';
+    }
+    const exists = await checkIfExists('phone', phone);
+    if (exists) {
+      return 'Phone number already in use';
     }
     return '';
   };
 
   const validateDob = (dob: string) => {
-    const parsedDate = parseDate(dob);
-    if (!parsedDate || isNaN(parsedDate.getTime())) {
+    const parsedDob = parseDate(dob);
+    if (!parsedDob || isNaN(parsedDob.getTime())) {
       return 'Invalid date format. Please use YYYY/MM/DD.';
     }
-    if (parsedDate > new Date() || parsedDate < new Date("1960-01-01")) {
+    if (parsedDob > new Date() || parsedDob < new Date("1960-01-01")) {
       return 'Date must be between 1960 and today.';
     }
     return '';
   };
-
-  // Parse date from input
+  
   const parseDate = (input: string): Date | null => {
     const parts = input.split('/');
     if (parts.length === 3) {
@@ -109,7 +132,7 @@ export function SignupFormDemo() {
   };
 
   const validateConfirmEmail = (confirmEmail: string) => {
-    if (confirmEmail !== email) {
+    if (confirmEmail.toLowerCase() !== email.toLowerCase()) {
       return 'Emails do not match';
     }
     return '';
@@ -122,15 +145,16 @@ export function SignupFormDemo() {
     return '';
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handleEmailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toLowerCase();
     setEmail(value);
-    setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    const errorMessage = await validateEmail(value);
+    setErrors((prev) => ({ ...prev, email: errorMessage }));
     setError(''); // Clear the main error message
   };
 
   const handleConfirmEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.toLowerCase();
     setConfirmEmail(value);
     setErrors((prev) => ({ ...prev, confirmEmail: validateConfirmEmail(value) }));
     setError(''); // Clear the main error message
@@ -164,12 +188,13 @@ export function SignupFormDemo() {
     setError(''); // Clear the main error message
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhoneChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.replace(/[^\d]/g, ''); // Remove non-numeric characters
     let value = '501+' + inputValue.slice(3); // Ensure the prefix "501+" remains
     if (value.length <= 11) { // Ensure max length is 11 (501+XXXXXXX)
       setPhone(value);
-      setErrors((prev) => ({ ...prev, phone: validatePhone(value) }));
+      const errorMessage = await validatePhone(value);
+      setErrors((prev) => ({ ...prev, phone: errorMessage }));
     }
     setError(''); // Clear the main error message
   };
@@ -217,13 +242,13 @@ export function SignupFormDemo() {
     setSuccess('');
 
     const newErrors = {
-      email: validateEmail(email),
+      email: await validateEmail(email),
       confirmEmail: validateConfirmEmail(confirmEmail),
       firstName: validateFirstName(firstName),
       lastName: validateLastName(lastName),
       password: validatePassword(password),
       confirmPassword: validateConfirmPassword(confirmPassword),
-      phone: validatePhone(phone),
+      phone: await validatePhone(phone),
       dob: validateDob(dobInput),
       gender: validateGender(gender),
     };
@@ -238,7 +263,7 @@ export function SignupFormDemo() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password, firstName, lastName, phone, dob: dobInput, username, gender }),
+      body: JSON.stringify({ email, password, firstName, lastName, phone, dob: dobInput, gender }),
     });
 
     const data = await response.json();
@@ -352,36 +377,36 @@ export function SignupFormDemo() {
             {errors.phone && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.phone}</p>}
           </LabelInputContainer>
           <LabelInputContainer className="mb-4">
-  <Label htmlFor="dob">Date of Birth</Label>
-  <div className="flex items-center space-x-2">
-    <Input
-      id="dob"
-      placeholder="YYYY/MM/DD"
-      type="text"
-      value={dobInput}
-      onChange={handleDobInputChange}
-      className={cn(errors.dob ? 'border-red-500' : 'border-gray-300')}
-    />
-    <Button
-      variant={"outline"}
-      className={cn("text-left font-normal", !dob && "text-muted-foreground")}
-      onClick={() => setCalendarVisible(!calendarVisible)}
-    >
-      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-    </Button>
-  </div>
-  {calendarVisible && (
-    <Calendar
-      mode="single"
-      selected={dob ?? undefined}  // Ensure selected is Date | undefined
-      onSelect={handleDobChange}    // Ensure onSelect handler handles Date | undefined
-      disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-      defaultMonth={new Date(2000, 0, 1)} // Set the default month to January 2000
-      initialFocus
-    />
-  )}
-  {errors.dob && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.dob}</p>}
-</LabelInputContainer>
+            <Label htmlFor="dob">Date of Birth</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="dob"
+                placeholder="YYYY/MM/DD"
+                type="text"
+                value={dobInput}
+                onChange={handleDobInputChange}
+                className={cn(errors.dob ? 'border-red-500' : 'border-gray-300')}
+              />
+              <Button
+                variant={"outline"}
+                className={cn("text-left font-normal", !dob && "text-muted-foreground")}
+                onClick={() => setCalendarVisible(!calendarVisible)}
+              >
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </div>
+            {calendarVisible && (
+              <Calendar
+                mode="single"
+                selected={dob ?? undefined}  // Ensure selected is Date | undefined
+                onSelect={handleDobChange}    // Ensure onSelect handler handles Date | undefined
+                disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                defaultMonth={new Date(2000, 0, 1)} // Set the default month to January 2000
+                initialFocus
+              />
+            )}
+            {errors.dob && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.dob}</p>}
+          </LabelInputContainer>
           <LabelInputContainer className="mb-4">
             <Label>Gender</Label>
             <div className="flex space-x-4">
@@ -424,19 +449,6 @@ export function SignupFormDemo() {
 
           <div className="bg-gradient-to-r from-transparent via-neutral-300 to-transparent my-8 h-[1px] w-full" />
 
-          <div className="flex flex-col space-y-4">
-            <button
-              className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-200"
-              type="button"
-              onClick={() => signIn('google')}
-            >
-              <IconBrandGoogle className="h-4 w-4 text-neutral-80" />
-              <span className="text-neutral-700 text-sm">
-                Google
-              </span>
-              <BottomGradient />
-            </button>
-          </div>
           <div className="mt-4 text-center">
             <span className="text-neutral-600">
               Have an account already?{' '}
