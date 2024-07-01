@@ -15,9 +15,26 @@ export function SignInForm() {
   const [errors, setErrors] = useState<{ email?: string, password?: string }>({});
   const router = useRouter();
 
-  const validateEmail = (email: string) => {
+  const validateEmail = async (email: string) => {
+    if (!email) {
+      return 'Email is required';
+    }
     if (!email.includes('@') || !email.includes('.')) {
       return 'Email must contain "@" and "."';
+    }
+    
+    // Check if email exists in the database
+    const response = await fetch('/api/auth/check-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+    if (!data.exists) {
+      return 'User does not exist, please sign up.';
     }
     return '';
   };
@@ -29,10 +46,11 @@ export function SignInForm() {
     return '';
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase(); // Convert to lowercase
     setEmail(value);
-    setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    const emailError = await validateEmail(value);
+    setErrors((prev) => ({ ...prev, email: emailError }));
     setError(''); // Clear the main error message
   };
 
@@ -47,13 +65,15 @@ export function SignInForm() {
     e.preventDefault();
     setError('');
 
-    const newErrors = {
-      email: validateEmail(email),
-      password: validatePassword(password),
-    };
-    setErrors(newErrors);
+    const emailError = await validateEmail(email);
+    if (emailError) {
+      setErrors((prev) => ({ ...prev, email: emailError }));
+      return;
+    }
 
-    if (newErrors.email || newErrors.password) {
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setErrors((prev) => ({ ...prev, password: passwordError }));
       return;
     }
 
@@ -64,7 +84,7 @@ export function SignInForm() {
     });
 
     if (result?.error) {
-      setError('Incorrect email or password');
+      setError(result.error);
     } else {
       router.push('/dashboard');
     }
@@ -104,7 +124,7 @@ export function SignInForm() {
               onChange={handlePasswordChange}
               className={cn(errors.password && 'border-red-500')}
             />
-            {errors.password && <p className="text-red-500 text-xs italic ml-2 mb-2">{errors.password}</p>}
+            {errors.password && !errors.email && <p className="text-red-500 text-xs italic ml-2 mb-2">{errors.password}</p>}
           </LabelInputContainer>
 
           {error && <p className="text-red-500 text-xs italic ml-2 mb-3">{error}</p>}

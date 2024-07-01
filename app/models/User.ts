@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 
 enum SubscriptionPlan {
   Free = 'Free',
@@ -6,7 +6,8 @@ enum SubscriptionPlan {
   Premium = 'Premium',
 }
 
-interface IUser extends Document {
+export interface IUser extends Document {
+  _id: Types.ObjectId;
   email: string;
   password?: string;
   firstName?: string;
@@ -17,6 +18,8 @@ interface IUser extends Document {
   role: 'user' | 'admin';
   subscriptionPlan?: SubscriptionPlan;
   jobListingsCount?: number;
+  failedLoginAttempts: number;
+  lockoutUntil?: Date | null;
 }
 
 const UserSchema: Schema<IUser> = new Schema({
@@ -30,6 +33,8 @@ const UserSchema: Schema<IUser> = new Schema({
   role: { type: String, enum: ['user', 'admin'], required: true, default: 'user' },
   subscriptionPlan: { type: String, enum: Object.values(SubscriptionPlan), default: SubscriptionPlan.Free },
   jobListingsCount: { type: Number, default: 0 },
+  failedLoginAttempts: { type: Number, default: 0 },
+  lockoutUntil: { type: Date, default: null },
 }, {
   timestamps: true,
 });
