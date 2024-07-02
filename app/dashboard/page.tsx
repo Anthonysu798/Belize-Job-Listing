@@ -1,22 +1,17 @@
-// pages/dashboard.js
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FaBars, FaTimes, FaUsers, FaDollarSign, FaBriefcase, FaUserShield, FaInbox, FaFileInvoice, FaComments, FaUser, FaLock, FaSignOutAlt, FaChartLine, FaClipboardList, FaCreditCard } from 'react-icons/fa';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { FaBars, FaTimes, FaUser, FaUsers, FaChartLine, FaClipboardList, FaCreditCard, FaInbox, FaFileInvoice, FaComments, FaLock, FaSignOutAlt } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import UserWithMostPosts from '../components/UserWithMostPost';
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+import UserData from '../components/TotalUserData';
+import UserStatisticsChart from '../components/UserStatisticsChart';
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [chartKey, setChartKey] = useState(0);  // key for forcing chart re-render
 
   useEffect(() => {
     if (status === 'loading') {
@@ -26,63 +21,11 @@ const Dashboard = () => {
     if (!session || session.user.role !== 'admin') {
       router.push('/404');
     }
-
-    const handleResize = () => {
-      setChartKey(prevKey => prevKey + 1);  // force re-render
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
   }, [session, status, router]);
 
   if (status === 'loading' || !session || session.user.role !== 'admin') {
     return null;
   }
-
-  const data = {
-    labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-    datasets: [
-      {
-        label: 'Total Users',
-        data: [2, 3, 50, 4, 60, 10, 13, 93, 13, 11, 120, 30],
-        borderColor: '#4a90e2',
-        backgroundColor: 'rgba(74, 144, 226, 0.2)',
-      },
-      {
-        label: 'Total Subscription Users',
-        data: [1, 1, 2, 3, 40, 0, 50, 60, 70, 80, 85, 90],
-        borderColor: '#4caf50',
-        backgroundColor: 'rgba(76, 175, 80, 0.2)',
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        min: 0,
-        max: 150,
-        ticks: {
-          stepSize: 10,
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'User Statistics',
-      },
-    },
-  };
 
   return (
     <div className="relative min-h-screen flex">
@@ -168,43 +111,10 @@ const Dashboard = () => {
           </div>
         </header>
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 px-4">
-          <div className="bg-white p-4 shadow rounded-lg flex items-center">
-            <FaUsers className="text-4xl text-purple-600 mr-4" />
-            <div>
-              <p className="text-xl font-bold">123</p>
-              <p className="text-sm">Total Users</p>
-              <p className="text-green-600">3.35% ↑</p>
-            </div>
-          </div>
-          <div className="bg-white p-4 shadow rounded-lg flex items-center">
-            <FaDollarSign className="text-4xl text-green-600 mr-4" />
-            <div>
-              <p className="text-xl font-bold">50</p>
-              <p className="text-sm">Total Subscription Users</p>
-              <p className="text-green-600">3.35% ↑</p>
-            </div>
-          </div>
-          <div className="bg-white p-4 shadow rounded-lg flex items-center">
-            <FaBriefcase className="text-4xl text-blue-600 mr-4" />
-            <div>
-              <p className="text-xl font-bold">512</p>
-              <p className="text-sm">Total Job Posted</p>
-              <p className="text-red-600">-0.35% ↓</p>
-            </div>
-          </div>
-          <div className="bg-white p-4 shadow rounded-lg flex items-center">
-            <FaUserShield className="text-4xl text-blue-600 mr-4" />
-            <div>
-              <p className="text-xl font-bold">2</p>
-              <p className="text-sm">Total Admin Users</p>
-              <p className="text-green-600">0.15% ↑</p>
-            </div>
-          </div>
+          <UserData />
         </section>
         <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-6 px-4">
-          <div className="bg-white p-6 shadow rounded-lg xl:col-span-1">
-            <Line data={data} options={options} key={chartKey} />
-          </div>
+          <UserStatisticsChart />
           <div className='xl:col-span-2'>
             <UserWithMostPosts />
           </div>
