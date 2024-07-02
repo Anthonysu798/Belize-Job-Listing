@@ -1,3 +1,5 @@
+// pages/dashboard.js
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -6,6 +8,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import UserWithMostPosts from '../components/UserWithMostPost';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -44,13 +47,13 @@ const Dashboard = () => {
     datasets: [
       {
         label: 'Total Users',
-        data: [20, 30, 50, 40, 60, 80, 70, 90, 100, 110, 120, 130],
+        data: [2, 3, 50, 4, 60, 10, 13, 93, 13, 11, 120, 30],
         borderColor: '#4a90e2',
         backgroundColor: 'rgba(74, 144, 226, 0.2)',
       },
       {
         label: 'Total Subscription Users',
-        data: [10, 15, 30, 25, 40, 45, 50, 60, 70, 80, 85, 90],
+        data: [1, 1, 2, 3, 40, 0, 50, 60, 70, 80, 85, 90],
         borderColor: '#4caf50',
         backgroundColor: 'rgba(76, 175, 80, 0.2)',
       },
@@ -198,8 +201,13 @@ const Dashboard = () => {
             </div>
           </div>
         </section>
-        <section className="bg-white p-6 shadow rounded-lg mx-4">
-          <Line data={data} options={options} key={chartKey} />
+        <section className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-6 px-4">
+          <div className="bg-white p-6 shadow rounded-lg xl:col-span-1">
+            <Line data={data} options={options} key={chartKey} />
+          </div>
+          <div className='xl:col-span-2'>
+            <UserWithMostPosts />
+          </div>
         </section>
       </main>
     </div>
