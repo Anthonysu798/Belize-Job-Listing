@@ -1,16 +1,16 @@
-// components/Sidebar.tsx
-
 import React from 'react';
-import { FaBars, FaTimes, FaUser, FaUsers, FaChartLine, FaClipboardList, FaCreditCard, FaInbox, FaFileInvoice, FaComments, FaLock, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaUsers, FaChartLine, FaClipboardList, FaCreditCard, FaInbox, FaFileInvoice, FaComments, FaLock, FaSignOutAlt } from 'react-icons/fa';
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+type SidebarProps = {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+};
+
+const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transition-transform transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative md:flex-shrink-0`}>
-      <div className="p-4 flex justify-between items-center md:block">
+      <div className="p-4 md:block">
         <h2 className="text-xl font-bold">Belize Job Listing</h2>
-        <button className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
-          {sidebarOpen ? <FaTimes /> : <FaBars />}
-        </button>
       </div>
       <nav>
         <ul>
