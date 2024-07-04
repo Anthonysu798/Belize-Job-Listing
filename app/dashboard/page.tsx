@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FaBars, FaTimes, FaUser, FaUsers, FaChartLine, FaClipboardList, FaCreditCard, FaInbox, FaFileInvoice, FaComments, FaLock, FaSignOutAlt } from 'react-icons/fa';
+import { FaBars, FaTimes, FaUser } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import UserWithMostPosts from '../components/UserWithMostPost';
@@ -24,6 +24,21 @@ const Dashboard = () => {
     }
   }, [session, status, router]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) { // Assuming md is 768px
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   if (status === 'loading' || !session || session.user.role !== 'admin') {
     return null;
   }
@@ -31,7 +46,10 @@ const Dashboard = () => {
   return (
     <div className="relative min-h-screen flex">
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <main className="flex-1 bg-gray-100 transition-all duration-300" onClick={() => setSidebarOpen(false)}>
+      <main 
+        className={`flex-1 bg-gray-100 transition-all duration-300 ${sidebarOpen ? 'blur-sm pointer-events-auto md:blur-0 md:pointer-events-auto' : ''}`} 
+        onClick={() => sidebarOpen && setSidebarOpen(false)}
+      >
         <header className="flex justify-between bg-purple-500 p-4 items-center mb-5">
           <div className="flex items-center">
             <button className="md:hidden mr-4" onClick={(e) => {
@@ -57,6 +75,13 @@ const Dashboard = () => {
           </div>
         </section>
       </main>
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black opacity-50 z-40"
+          onClick={() => setSidebarOpen(false)}
+          style={{ cursor: 'pointer' }}
+        />
+      )}
     </div>
   );
 };
