@@ -28,13 +28,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return res.status(404).json({ success: false, message: 'User not found' });
         }
 
+        // Ensure jobListingsCount is defined
+        const jobListingsCount = user.jobListingsCount ?? 0;
+
         const maxListings = planLimits[user.subscriptionPlan as keyof PlanLimits];
-        if (user.jobListingsCount >= maxListings) {
+        if (jobListingsCount >= maxListings) {
           return res.status(403).json({ success: false, message: `Upgrade your plan to post more than ${maxListings} job listings.` });
         }
 
         const job = await Job.create(req.body);
-        user.jobListingsCount += 1;
+        user.jobListingsCount = jobListingsCount + 1;
         await user.save();
 
         res.status(201).json({ success: true, data: job });
