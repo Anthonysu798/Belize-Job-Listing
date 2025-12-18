@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Label } from "@/app/components/ui/label";
 import { Input } from "@/app/components/ui/input";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/app/components/ui/card";
+import { AnimatedButton } from "@/app/components/ui/animated-button";
 import { cn } from "@/app/utils/cn";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -10,6 +12,8 @@ import { Button } from "@/app/components/ui/button";
 import { Calendar } from "@/app/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
+import { IconMail, IconLock, IconUser, IconPhone, IconCalendar, IconArrowRight } from '@tabler/icons-react';
+import { motion } from "framer-motion";
 
 export function SignupFormDemo() {
   const [email, setEmail] = useState('');
@@ -26,6 +30,7 @@ export function SignupFormDemo() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   // Helper function to check if a field exists
@@ -240,6 +245,7 @@ export function SignupFormDemo() {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setIsLoading(true);
 
     const newErrors = {
       email: await validateEmail(email),
@@ -255,6 +261,7 @@ export function SignupFormDemo() {
     setErrors(newErrors);
 
     if (Object.values(newErrors).some(error => error)) {
+      setIsLoading(false);
       return;
     }
 
@@ -270,207 +277,399 @@ export function SignupFormDemo() {
 
     if (response.ok) {
       setSuccess('User created successfully. Redirecting to sign-in...');
-      // Redirect to the sign-in form after a short delay
       setTimeout(() => {
         router.push('/auth/signin');
-      }, 4000); // 4 seconds delay
+      }, 2000);
     } else {
       setError(data.message);
+      setIsLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="mt-[40px] max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white">
-        <h2 className="font-bold text-xl text-neutral-800 ">
-          Welcome to Belize Job Listing
-        </h2>
-        <p className="text-neutral-600 text-sm max-w-sm mt-2">
-          Please fill your credentials to sign up for an account with us
-        </p>
-
-        <form className="my-8" onSubmit={handleSubmit} noValidate>
-          <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-            <LabelInputContainer>
-              <Label htmlFor="firstname">First name</Label>
-              <Input
-                id="firstname"
-                placeholder="Enter your first name"
-                type="text"
-                value={firstName}
-                onChange={handleFirstNameChange}
-                className={cn(errors.firstName ? 'border-red-500' : 'border-gray-300')}
-              />
-              {errors.firstName && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.firstName}</p>}
-            </LabelInputContainer>
-            <LabelInputContainer>
-              <Label htmlFor="lastname">Last name</Label>
-              <Input
-                id="lastname"
-                placeholder="Enter your last name"
-                type="text"
-                value={lastName}
-                onChange={handleLastNameChange}
-                className={cn(errors.lastName ? 'border-red-500' : 'border-gray-300')}
-              />
-              {errors.lastName && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.lastName}</p>}
-            </LabelInputContainer>
-          </div>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="email">Email Address</Label>
-            <Input
-              id="email"
-              placeholder="Enter your email"
-              type="email"
-              value={email}
-              onChange={handleEmailChange}
-              className={cn(errors.email ? 'border-red-500' : 'border-gray-300')}
-            />
-            {errors.email && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.email}</p>}
-          </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="confirmEmail">Confirm Email</Label>
-            <Input
-              id="confirmEmail"
-              placeholder="Confirm your email"
-              type="email"
-              value={confirmEmail}
-              onChange={handleConfirmEmailChange}
-              className={cn(errors.confirmEmail ? 'border-red-500' : 'border-gray-300')}
-            />
-            {errors.confirmEmail && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.confirmEmail}</p>}
-          </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              placeholder="Enter your password"
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className={cn(errors.password ? 'border-red-500' : 'border-gray-300')}
-            />
-            {errors.password && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.password}</p>}
-          </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              id="confirmPassword"
-              placeholder="Confirm your password"
-              type="password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              className={cn(errors.confirmPassword ? 'border-red-500' : 'border-gray-300')}
-            />
-            {errors.confirmPassword && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.confirmPassword}</p>}
-          </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              id="phone"
-              placeholder="Enter your phone number"
-              type="text"
-              value={phone}
-              onChange={handlePhoneChange}
-              className={cn(errors.phone ? 'border-red-500' : 'border-gray-300')}
-            />
-            {errors.phone && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.phone}</p>}
-          </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
-            <Label htmlFor="dob">Date of Birth</Label>
-            <div className="flex items-center space-x-2">
-              <Input
-                id="dob"
-                placeholder="YYYY/MM/DD"
-                type="text"
-                value={dobInput}
-                onChange={handleDobInputChange}
-                className={cn(errors.dob ? 'border-red-500' : 'border-gray-300')}
-              />
-              <Button
-                variant={"outline"}
-                className={cn("text-left font-normal", !dob && "text-muted-foreground")}
-                onClick={() => setCalendarVisible(!calendarVisible)}
-              >
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-              </Button>
-            </div>
-            {calendarVisible && (
-              <Calendar
-                mode="single"
-                selected={dob ?? undefined}  // Ensure selected is Date | undefined
-                onSelect={handleDobChange}    // Ensure onSelect handler handles Date | undefined
-                disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-                defaultMonth={new Date(2000, 0, 1)} // Set the default month to January 2000
-                initialFocus
-              />
-            )}
-            {errors.dob && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.dob}</p>}
-          </LabelInputContainer>
-          <LabelInputContainer className="mb-4">
-            <Label>Gender</Label>
-            <div className="flex space-x-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  checked={gender === 'male'}
-                  onChange={handleGenderChange}
-                  className="mr-2"
-                />
-                Male
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  checked={gender === 'female'}
-                  onChange={handleGenderChange}
-                  className="mr-2"
-                />
-                Female
-              </label>
-            </div>
-            {errors.gender && <p className="text-red-500 text-xs italic mt-1 ml-3">{errors.gender}</p>}
-          </LabelInputContainer>
-
-          {error && <p className="text-red-500 text-xs italic ml-3 mt-2 mb-3">{error}</p>}
-          {success && <p className="text-green-500 text-center text-xs italic ml-3 mt-2 mb-2">{success}</p>}
-
-          <button
-            className="bg-gradient-to-br relative group/btn from-blue-900 to-pink-400 block w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
-            type="submit"
-          >
-            Sign up &rarr;
-            <BottomGradient />
-          </button>
-
-          <div className="bg-gradient-to-r from-transparent via-neutral-300 to-transparent my-8 h-[1px] w-full" />
-
-          <div className="mt-4 text-center">
-            <span className="text-neutral-600">
-              Have an account already?{' '}
-              <Link href="/auth/signin" legacyBehavior>
-                <a className="text-blue-500 hover:underline">Sign In</a>
-              </Link>
-            </span>
-          </div>
-        </form>
+    <div className="relative min-h-screen flex items-center justify-center p-4 py-12">
+      {/* Animated background */}
+      <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
       </div>
-    </>
+
+      {/* Floating orbs */}
+      <motion.div
+        className="absolute top-20 left-20 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+        animate={{
+          x: [0, 100, 0],
+          y: [0, -100, 0],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-20 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+        animate={{
+          x: [0, -100, 0],
+          y: [0, 100, 0],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <Card className="relative z-10 w-full max-w-2xl">
+        <CardHeader>
+          <CardTitle>Create Your Account</CardTitle>
+          <CardDescription>
+            Join Belize Job Listing to find your dream job
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <form onSubmit={handleSubmit} noValidate className="space-y-5">
+            {/* Name Fields */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <LabelInputContainer>
+                <Label htmlFor="firstname" className="flex items-center gap-2">
+                  <IconUser size={16} />
+                  First Name
+                </Label>
+                <Input
+                  id="firstname"
+                  placeholder="John"
+                  type="text"
+                  value={firstName}
+                  onChange={handleFirstNameChange}
+                  className={cn(errors.firstName && 'border-red-500')}
+                  disabled={isLoading}
+                />
+                {errors.firstName && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.firstName}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+
+              <LabelInputContainer>
+                <Label htmlFor="lastname" className="flex items-center gap-2">
+                  <IconUser size={16} />
+                  Last Name
+                </Label>
+                <Input
+                  id="lastname"
+                  placeholder="Doe"
+                  type="text"
+                  value={lastName}
+                  onChange={handleLastNameChange}
+                  className={cn(errors.lastName && 'border-red-500')}
+                  disabled={isLoading}
+                />
+                {errors.lastName && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.lastName}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+            </div>
+            {/* Email Fields */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <LabelInputContainer>
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <IconMail size={16} />
+                  Email Address
+                </Label>
+                <Input
+                  id="email"
+                  placeholder="you@example.com"
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  className={cn(errors.email && 'border-red-500')}
+                  disabled={isLoading}
+                />
+                {errors.email && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.email}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+
+              <LabelInputContainer>
+                <Label htmlFor="confirmEmail" className="flex items-center gap-2">
+                  <IconMail size={16} />
+                  Confirm Email
+                </Label>
+                <Input
+                  id="confirmEmail"
+                  placeholder="you@example.com"
+                  type="email"
+                  value={confirmEmail}
+                  onChange={handleConfirmEmailChange}
+                  className={cn(errors.confirmEmail && 'border-red-500')}
+                  disabled={isLoading}
+                />
+                {errors.confirmEmail && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.confirmEmail}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+            </div>
+
+            {/* Password Fields */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <LabelInputContainer>
+                <Label htmlFor="password" className="flex items-center gap-2">
+                  <IconLock size={16} />
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  placeholder="••••••••"
+                  type="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className={cn(errors.password && 'border-red-500')}
+                  disabled={isLoading}
+                />
+                {errors.password && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.password}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+
+              <LabelInputContainer>
+                <Label htmlFor="confirmPassword" className="flex items-center gap-2">
+                  <IconLock size={16} />
+                  Confirm Password
+                </Label>
+                <Input
+                  id="confirmPassword"
+                  placeholder="••••••••"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  className={cn(errors.confirmPassword && 'border-red-500')}
+                  disabled={isLoading}
+                />
+                {errors.confirmPassword && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.confirmPassword}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+            </div>
+            {/* Phone and DOB */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <LabelInputContainer>
+                <Label htmlFor="phone" className="flex items-center gap-2">
+                  <IconPhone size={16} />
+                  Phone Number
+                </Label>
+                <Input
+                  id="phone"
+                  placeholder="501+XXXXXXX"
+                  type="text"
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  className={cn(errors.phone && 'border-red-500')}
+                  disabled={isLoading}
+                />
+                {errors.phone && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.phone}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+
+              <LabelInputContainer>
+                <Label htmlFor="dob" className="flex items-center gap-2">
+                  <IconCalendar size={16} />
+                  Date of Birth
+                </Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="dob"
+                    placeholder="YYYY/MM/DD"
+                    type="text"
+                    value={dobInput}
+                    onChange={handleDobInputChange}
+                    className={cn(errors.dob && 'border-red-500', 'flex-1')}
+                    disabled={isLoading}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={cn("text-left font-normal", !dob && "text-muted-foreground")}
+                    onClick={() => setCalendarVisible(!calendarVisible)}
+                    disabled={isLoading}
+                  >
+                    <CalendarIcon className="h-4 w-4" />
+                  </Button>
+                </div>
+                {calendarVisible && (
+                  <div className="mt-2 p-3 border rounded-lg bg-white shadow-lg">
+                    <Calendar
+                      mode="single"
+                      selected={dob ?? undefined}
+                      onSelect={handleDobChange}
+                      disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                      defaultMonth={new Date(2000, 0, 1)}
+                      initialFocus
+                    />
+                  </div>
+                )}
+                {errors.dob && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs ml-1"
+                  >
+                    {errors.dob}
+                  </motion.p>
+                )}
+              </LabelInputContainer>
+            </div>
+
+            {/* Gender */}
+            <LabelInputContainer>
+              <Label className="mb-2">Gender</Label>
+              <div className="flex gap-6">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    checked={gender === 'male'}
+                    onChange={handleGenderChange}
+                    disabled={isLoading}
+                    className="w-4 h-4 text-blue-600 cursor-pointer"
+                  />
+                  <span className="text-sm text-neutral-700 group-hover:text-blue-600 transition-colors">Male</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    checked={gender === 'female'}
+                    onChange={handleGenderChange}
+                    disabled={isLoading}
+                    className="w-4 h-4 text-blue-600 cursor-pointer"
+                  />
+                  <span className="text-sm text-neutral-700 group-hover:text-blue-600 transition-colors">Female</span>
+                </label>
+              </div>
+              {errors.gender && (
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-500 text-xs ml-1 mt-1"
+                >
+                  {errors.gender}
+                </motion.p>
+              )}
+            </LabelInputContainer>
+
+            {/* Error/Success Messages */}
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-3 rounded-lg bg-red-50 border border-red-200"
+              >
+                <p className="text-red-600 text-sm">{error}</p>
+              </motion.div>
+            )}
+
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-3 rounded-lg bg-green-50 border border-green-200"
+              >
+                <p className="text-green-600 text-sm text-center font-medium">{success}</p>
+              </motion.div>
+            )}
+
+            {/* Submit Button */}
+            <AnimatedButton type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <motion.div
+                    className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  Sign Up
+                  <IconArrowRight size={18} />
+                </>
+              )}
+            </AnimatedButton>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-neutral-200"></div>
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-neutral-500">or</span>
+              </div>
+            </div>
+
+            {/* Sign In Link */}
+            <div className="text-center">
+              <span className="text-neutral-600 text-sm">
+                Already have an account?{' '}
+                <Link
+                  href="/auth/signin"
+                  className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
+                >
+                  Sign In
+                </Link>
+              </span>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
 
 const LabelInputContainer = ({
   children,
